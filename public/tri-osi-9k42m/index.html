@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Технотранс · Три оси</title>
+<style>
+:root{--dark:#1E3050;--accent:#2E90FF;--accenth:#1E6FD9;--chip:#E3ECF5;--red:#CC0000;--text:#1E2A3A;--sec:#5A6B7B;--bd:#C9D6E5;--bg:#EAF0F6;--ok:#1E7A34}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:var(--text)}
+#app{max-width:720px;margin:0 auto;min-height:100vh;background:var(--bg)}
+.hd{background:var(--dark);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+.lg{display:flex;align-items:center;gap:10px}
+.lg .m{width:28px;height:28px;border-radius:6px;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+.lg b{color:#fff;font-size:16px}
+.hd .sub{color:#AEC4DE;font-size:13px}
+.pbar{height:7px;background:#D8E2EE}
+.pbar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.body{padding:18px 20px 8px}
+.stept{color:var(--dark);font-weight:700;font-size:16px;margin-bottom:12px}
+.axtitle{font-size:26px;font-weight:800;color:var(--dark);letter-spacing:.5px;margin:4px 0 14px}
+.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(30,48,80,.08);margin-bottom:12px}
+.q{font-size:16px;font-weight:600;line-height:1.4;margin-bottom:10px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{font:inherit;font-size:14px;padding:9px 15px;border-radius:9px;border:1.5px solid var(--bd);background:#fff;color:var(--sec);cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt.sel{background:var(--dark);color:#fff;border-color:var(--dark);font-weight:600}
+.opt.selm{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+.scale{display:flex;gap:7px;flex-wrap:wrap}
+.sc{width:42px;height:42px;border-radius:9px;border:1.5px solid var(--bd);background:#fff;color:var(--sec);font:inherit;font-weight:700;cursor:pointer}
+.sc.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sclab{display:flex;justify-content:space-between;color:var(--sec);font-size:12px;margin-top:6px}
+.tawrap{position:relative}
+.ta{width:100%;border:1.5px solid var(--bd);border-radius:9px;padding:11px 44px 11px 12px;font:inherit;font-size:15px;color:var(--text);background:#FBFCFE;resize:vertical;min-height:44px}
+.ta.own{min-height:38px;margin-top:9px}
+.ta:focus{outline:none;border-color:var(--accent)}
+.mic{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:8px;border:1.5px solid var(--bd);background:#fff;color:var(--sec);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.mic:hover{border-color:var(--accent);color:var(--accent)}
+.mic.rec{background:var(--red);border-color:var(--red);color:#fff;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.55}}
+.ft{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px 22px}
+.back{background:none;border:none;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.prog{color:var(--sec);font-size:13px}
+.next{padding:12px 24px;border-radius:9px;background:var(--accent);color:#fff;font:inherit;font-size:15px;font-weight:700;border:none;cursor:pointer}
+.next:hover{background:var(--accenth)}
+.foot{background:var(--dark);padding:10px 20px;color:#AEC4DE;font-size:11px;text-align:center}
+.big{font-size:22px;font-weight:800;color:var(--dark);margin-bottom:14px;line-height:1.3}
+.axrow{display:flex;gap:10px;margin-bottom:12px}
+.axrow .k{color:var(--accent);font-weight:800;min-width:140px;font-size:15px}
+.axrow .v{color:var(--text);font-size:15px;line-height:1.45}
+.res{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 1px 4px rgba(30,48,80,.08);white-space:pre-wrap;font-size:13px;line-height:1.55;max-height:260px;overflow:auto}
+.rbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.rbtn{padding:11px 18px;border-radius:9px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid var(--accent);background:#fff;color:var(--accent)}
+.rbtn.pri{background:var(--accent);color:#fff}
+.okmsg{color:var(--ok);font-size:13px;margin-top:8px;display:none}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var MIC='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>';
+var DIRS=['Продажи спецтехники','Заводы','Крупный корпорат','Сервис','Запчасти','Снабжение','Производство','Финансы и платежи','Кадры','Учебный центр','Маркетинг'];
+
+var BLOCKS=[
+ {title:'Для начала',noHead:true,
+  qs:[
+   {id:'s1',t:'single',q:'Сколько времени хотите тратить на бизнес через год?',o:['Как сейчас','Поменьше','Только стратегия','Совсем выйти']},
+   {id:'s2',t:'single',q:'Сколько часов в неделю работаете сейчас?',o:['до 40','40–60','60–80','больше 80']},
+   {id:'s3',t:'single',q:'Можете уехать на две недели без связи?',o:['Да','С трудом','Нет']}
+  ]},
+ {title:'Ваше участие по направлениям',
+  qs:DIRS.map(function(d,idx){return {id:'tri_'+idx,t:'scale',q:d,min:'меня нет',max:'всё на мне'};})},
+ {title:'РЕШЕНИЯ', ax:true,
+  qs:[
+   {id:'r1',t:'single',q:'До какой суммы решение проходит без вас?',o:['до 3 миллионов','до 10 миллионов','до 30 миллионов','всё через меня']},
+   {id:'r2',t:'text',q:'Вспомните пять последних решений. Что из них могли решить без вас?'},
+   {id:'r3',t:'single',q:'Руководитель направления приносит готовое решение. Что чаще?',o:['Утверждаю','Правлю детали','Разворачиваю по-своему','Отправляю решать самому']},
+   {id:'r3b',t:'single',q:'Когда правите за руководителем — что дальше?',o:['Он учится, дальше решает сам','Приносит то же снова','Перестаёт проявлять инициативу']},
+   {id:'r4',t:'single',q:'Человек решил сам и ошибся. Что обычно бывает?',o:['Разбираем и идём дальше','Смотря какая ошибка','Крепко получит']},
+   {id:'r4b',t:'single',q:'Даёте руководителю решать самому, зная, что может ошибиться?',o:['Да, это его зона','Только в мелочах','Нет, риск большой']},
+   {id:'r5',t:'multi',q:'Где записаны правила — кто что решает сам?',o:['Лимиты по деньгам','Скидки и условия','Кто что утверждает','Что делать в спорных случаях','Нигде, по ситуации']},
+   {id:'r6',t:'multi',q:'Почему несут вам то, что могли решить сами?',o:['Нет полномочий','Боятся ошибиться','Не хватает связей','Привыкли спрашивать','Знают, что переделаю']}
+  ]},
+ {title:'ЛЮДИ', ax:true,
+  qs:[
+   {id:'l1',t:'single',q:'Зам для людей — власть как вы?',o:['Да, как я','Слабее','Только на бумаге']},
+   {id:'l2',t:'text',q:'Со сколькими людьми регулярно говорите про стратегию и важное? Как часто?'},
+   {id:'l3',t:'multi',q:'С чем к вам приходят на такие разговоры?',o:['Стратегия и развитие','Крупные клиенты и сделки','Сложные ситуации','Люди и мотивация','Свериться']},
+   {id:'l4',t:'single',q:'Что им нужно от разговора?',o:['Чтобы я решил','Моё видение','Одобрение','Чтобы оценил риск']},
+   {id:'l5',t:'text',q:'Что будет, если вас месяц нет и не с кем это обсудить?'},
+   {id:'l6',t:'text',q:'Крупный клиент недоволен, спор с Технотранс. Кто улаживает, кроме вас? Почему идут к вам?'},
+   {id:'l7',t:'single',q:'Есть, с кем можно так же говорить о стратегии?',o:['Есть','Можно вырастить','Нет']}
+  ]},
+ {title:'ЗНАНИЯ И СВЯЗИ', ax:true,
+  qs:[
+   {id:'z1',t:'multi',q:'С кем отношения держатся на вас, а не на компании?',o:['Заводы','Крупные клиенты','Госструктуры','Банки и лизинг','Поставщики','Отраслевые знакомые']},
+   {id:'z2',t:'text',q:'Что там личного — условия, доверие, история, слово? Пример.'},
+   {id:'z3',t:'single',q:'Цены и особые условия клиентам где?',o:['В системе','Частично','В голове']},
+   {id:'z4',t:'single',q:'Что кому обещали по ключевым клиентам?',o:['В CRM','В памяти']},
+   {id:'z5',t:'text',q:'Негласные правила, как у вас принято. Что знаете только вы?'},
+   {id:'z6',t:'text',q:'Вас на рынке знают лично. Какие двери это открывает?'},
+   {id:'z7',t:'text',q:'Что делаете по опыту на автомате, а другому долго объяснять?'},
+   {id:'z8',t:'text',q:'Вас нет месяц. Что закроется, какие знания пропадут?'}
+  ]},
+ {title:'Что можно упростить',
+  qs:[
+   {id:'auto',t:'multi',q:'Что из вашей работы мог бы взять на себя помощник или программа?',o:['Единую картину бизнеса в реальном времени','Контроль, что решения и поручения доходят до конца','Аналитику по сделкам и клиентам','Подготовку к переговорам — досье по клиенту/заводу','Переписку по типовым вопросам','Ничего']}
+  ]},
+ {title:'Свободное поле',
+  qs:[{id:'free',t:'text',q:'Что важное вы хотели бы дополнить?'}]}
+];
+
+var ans={}; try{ans=JSON.parse(localStorage.getItem('tt_triaxis')||'{}');}catch(e){}
+function save(){try{localStorage.setItem('tt_triaxis',JSON.stringify(ans));}catch(e){}}
+var view='intro', i=0;
+var app=document.getElementById('app');
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+var rec=null;
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function esca(s){return esc(s).replace(/"/g,'&quot;');}
+function totalQ(){var n=0;BLOCKS.forEach(function(b){n+=b.qs.length;});return n;}
+function answered(){var n=0;for(var k in ans){if(/_own$/.test(k))continue;var v=ans[k];if(v!==''&&v!==undefined&&!(Array.isArray(v)&&v.length===0))n++;}return n;}
+function ownField(id){return '<div class="tawrap"><textarea class="ta own" data-t="'+id+'_own" placeholder="свой вариант">'+esc(ans[id+'_own']||'')+'</textarea>'+(SR?'<button class="mic" data-mic="'+id+'_own" title="Голосом">'+MIC+'</button>':'')+'</div>';}
+
+function ctrl(q){
+  if(q.t==='single') return '<div class="opts">'+q.o.map(function(o){return '<button class="opt '+(ans[q.id]===o?'sel':'')+'" data-a="'+q.id+'" data-v="'+esca(o)+'">'+esc(o)+'</button>';}).join('')+'</div>'+ownField(q.id);
+  if(q.t==='multi'){var arr=ans[q.id]||[];return '<div class="opts">'+q.o.map(function(o){return '<button class="opt '+(arr.indexOf(o)>-1?'selm':'')+'" data-m="'+q.id+'" data-v="'+esca(o)+'">'+esc(o)+'</button>';}).join('')+'</div>'+ownField(q.id);}
+  if(q.t==='scale'){var v=ans[q.id];var h='<div class="scale">';for(var n=1;n<=5;n++)h+='<button class="sc '+(v==n?'sel':'')+'" data-a="'+q.id+'" data-v="'+n+'">'+n+'</button>';h+='</div><div class="sclab"><span>'+esc(q.min)+'</span><span>'+esc(q.max)+'</span></div>';return h;}
+  return '<div class="tawrap"><textarea class="ta" data-t="'+q.id+'" placeholder="Напишите или наговорите...">'+esc(ans[q.id]||'')+'</textarea>'+(SR?'<button class="mic" data-mic="'+q.id+'" title="Голосом">'+MIC+'</button>':'')+'</div>';
+}
+function renderBlock(){
+  var b=BLOCKS[i];
+  document.querySelector('.pbar>i').style.width=Math.round(answered()/totalQ()*100)+'%';
+  document.querySelector('.hd .sub').textContent=(b.ax?'ось':'блок')+' '+(i+1)+' из '+BLOCKS.length;
+  var h=b.ax?('<div class="axtitle">'+esc(b.title)+'</div>'):(b.noHead?'':'<div class="stept">'+esc(b.title)+'</div>');
+  b.qs.forEach(function(q){h+='<div class="card"><div class="q">'+esc(q.q)+'</div>'+ctrl(q)+'</div>';});
+  document.querySelector('.body').innerHTML=h;
+  document.querySelector('.ft').innerHTML='<button class="back" data-nav="back">'+(i===0?'← В начало':'← Назад')+'</button><span class="prog">'+(i+1)+' / '+BLOCKS.length+'</span><button class="next" data-nav="next">'+(i===BLOCKS.length-1?'Завершить →':'Далее →')+'</button>';
+}
+function renderIntro(){
+  document.querySelector('.pbar>i').style.width='0%';
+  document.querySelector('.hd .sub').textContent='для собственника';
+  document.querySelector('.body').innerHTML=
+    '<div class="axrow"><div class="k">РЕШЕНИЯ</div><div class="v">что не двигается без вашего слова, хотя директора/менеджеры на местах.</div></div>'+
+    '<div class="axrow"><div class="k">ЛЮДИ</div><div class="v">кто идёт к вам и зачем.</div></div>'+
+    '<div class="axrow"><div class="k">ЗНАНИЯ И СВЯЗИ</div><div class="v">что живёт только в вашей голове и на ваших связях.</div></div>'+
+    '<div class="q" style="font-weight:400;color:#5A6B7B;margin-top:14px">Честно, коротко, можно голосом.</div>';
+  document.querySelector('.ft').innerHTML='<button class="back" data-nav="list">Все вопросы</button><span class="prog"></span><button class="next" data-nav="start">Начать →</button>';
+}
+function renderList(){
+  document.querySelector('.pbar>i').style.width='0%';
+  document.querySelector('.hd .sub').textContent='все вопросы';
+  var h='<div class="big">Все вопросы</div>';
+  BLOCKS.forEach(function(b){h+='<div class="stept" style="margin-top:14px">'+esc(b.title)+'</div>';b.qs.forEach(function(q){h+='<div style="font-size:15px;margin:7px 0 2px">• '+esc(q.q)+'</div>';if(q.o)h+='<div style="color:#5A6B7B;font-size:13px;margin-bottom:2px">'+q.o.map(esc).join(' · ')+'</div>';if(q.t==='scale')h+='<div style="color:#5A6B7B;font-size:13px;margin-bottom:2px">'+esc(q.min)+' … '+esc(q.max)+'</div>';});});
+  document.querySelector('.body').innerHTML=h;
+  document.querySelector('.ft').innerHTML='<button class="back" data-nav="back">← Назад</button><span class="prog"></span><button class="next" data-nav="start">Заполнить →</button>';
+}
+function report(){
+  var L=['ТЕХНОТРАНС — Три оси','Дата: '+new Date().toLocaleDateString('ru-RU'),''];
+  BLOCKS.forEach(function(b){L.push('=== '+b.title+' ===');b.qs.forEach(function(q){var v=ans[q.id];if(Array.isArray(v))v=v.join(', ');if(q.t==='scale'&&v)v=v+'/5';L.push('• '+q.q);L.push('   '+((v!==undefined&&v!=='')?v:'—'));var own=ans[q.id+'_own'];if(own)L.push('   свой вариант: '+own);});L.push('');});
+  return L.join('\n');
+}
+function renderResults(){
+  document.querySelector('.pbar>i').style.width='100%';
+  document.querySelector('.hd .sub').textContent='готово';
+  var sp=(typeof sendPrompt==='function');
+  document.querySelector('.body').innerHTML='<div class="big">Готово. Карта собрана.</div><div class="res">'+esc(report())+'</div><div class="rbtns">'+(sp?'<button class="rbtn pri" data-nav="send">Отправить прямо сейчас</button>':'')+'<button class="rbtn '+(sp?'':'pri')+'" data-nav="copy">Скопировать</button><button class="rbtn" data-nav="dl">Скачать</button><button class="rbtn" data-nav="tg">В Telegram</button></div><div class="okmsg" id="okmsg">Скопировано</div>';
+  document.querySelector('.ft').innerHTML='<button class="back" data-nav="back">← Назад</button><span class="prog">готово</span><span></span>';
+}
+function render(){ if(view==='intro')renderIntro(); else if(view==='list')renderList(); else if(view==='results')renderResults(); else renderBlock(); }
+
+function markMic(id,on){var b=document.querySelector('[data-mic="'+id+'"]');if(b)b.classList.toggle('rec',on);}
+function voice(id){
+  if(!SR){alert('Голосовой ввод тут не поддерживается. Откройте в Chrome или включите микрофон на клавиатуре телефона.');return;}
+  if(rec){try{rec.stop();}catch(e){} if(rec._id===id){rec=null;return;}}
+  rec=new SR(); rec._id=id; rec.lang='ru-RU'; rec.interimResults=true; rec.continuous=false;
+  var base=ans[id]?ans[id]+' ':'';
+  markMic(id,true);
+  rec.onresult=function(e){var tr='';for(var k=0;k<e.results.length;k++)tr+=e.results[k][0].transcript;ans[id]=base+tr;var ta=document.querySelector('[data-t="'+id+'"]');if(ta)ta.value=ans[id];};
+  rec.onend=function(){markMic(id,false);save();rec=null;};
+  rec.onerror=function(){markMic(id,false);};
+  try{rec.start();}catch(e){}
+}
+
+app.innerHTML='<div class="hd"><div class="lg"><div class="m">ТТ</div><b>Три оси</b></div><span class="sub"></span></div><div class="pbar"><i></i></div><div class="body"></div><div class="ft"></div><div class="foot">Технотранс · для собственника · размещено без публичного доступа, страница закрыта от индексации · ответы остаются у вас и никуда не отправляются автоматически</div>';
+
+app.addEventListener('click',function(e){
+  var t=e.target.closest('[data-a],[data-m],[data-nav],[data-mic]'); if(!t)return;
+  if(t.dataset.mic){voice(t.dataset.mic);return;}
+  if(t.dataset.a){ans[t.dataset.a]=(/^\d+$/.test(t.dataset.v)?parseInt(t.dataset.v,10):t.dataset.v);save();render();return;}
+  if(t.dataset.m){var id=t.dataset.m,v=t.dataset.v,a=ans[id]||[];var k=a.indexOf(v);if(k>-1)a.splice(k,1);else a.push(v);ans[id]=a;save();render();return;}
+  var nav=t.dataset.nav;
+  if(nav==='list'){view='list';render();window.scrollTo(0,0);}
+  else if(nav==='start'){view='block';i=0;render();window.scrollTo(0,0);}
+  else if(nav==='next'){ if(i<BLOCKS.length-1){i++;render();} else {view='results';render();} window.scrollTo(0,0);}
+  else if(nav==='back'){ if(view==='list'){view='intro';render();} else if(view==='results'){view='block';i=BLOCKS.length-1;render();} else if(i===0){view='intro';render();} else {i--;render();} window.scrollTo(0,0);}
+  else if(nav==='copy'){ if(navigator.clipboard){navigator.clipboard.writeText(report()).then(function(){document.getElementById('okmsg').style.display='block';});} }
+  else if(nav==='dl'){ var blob=new Blob([report()],{type:'text/plain;charset=utf-8'});var a2=document.createElement('a');a2.href=URL.createObjectURL(blob);a2.download='Технотранс-три-оси.txt';a2.click(); }
+  else if(nav==='tg'){ window.open('https://t.me/share/url?url=%20&text='+encodeURIComponent(report()),'_blank'); }
+  else if(nav==='send'){ if(typeof sendPrompt==='function') sendPrompt('Собственник заполнил «Три оси». Ответы:\n\n'+report()+'\n\nРазбери по осям и сверь с нашим диагнозом.'); }
+});
+app.addEventListener('input',function(e){ if(e.target.dataset.t){ans[e.target.dataset.t]=e.target.value;save();} });
+
+render();
+</script>
+</body>
+</html>
