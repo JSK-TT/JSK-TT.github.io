@@ -3,6 +3,7 @@ import { contact } from "@/lib/data";
 export function SiteFooter() {
   return (
     <footer className="site">
+      <div className="orbf" aria-hidden="true" />
       <div className="foot-contact" id="contacts">
         <div className="wrap">
           <div>
@@ -22,7 +23,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="foot-slogan">
-        <div className="wrap">
+        <div className="wrap brandline">
           Специализированная техника / Продажа / Сервис / Гарантийный надзор /
           Запчасти / <b>Инструктажи</b>
         </div>

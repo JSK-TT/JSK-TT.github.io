@@ -17,6 +17,16 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body>
+        {/* Декоративная сцена «Индиго-стекло»: орбы + шестерня (дизайн-система ТТ) */}
+        <div className="scene-fx" aria-hidden="true">
+          <div className="orb orb-a" />
+          <div className="orb orb-b" />
+          <div className="orb orb-c" />
+          <div className="gear-fx">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/gear-tt-white.png" alt="" />
+          </div>
+        </div>
         <SiteHeader />
         {children}
         <SiteFooter />

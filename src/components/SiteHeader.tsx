@@ -7,7 +7,7 @@ export function SiteHeader() {
         <div className="wrap">
           <Link href="/" className="brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="logo" src="/assets/logo-tt.png?v=4" alt="ТехноТранс" />
+            <img className="logo" src="/assets/logo-tt-white.png" alt="ТехноТранс" />
           </Link>
           <div className="req">
             <div className="req-name">ООО «НПФ «ТЕХНОТРАНС»</div>
