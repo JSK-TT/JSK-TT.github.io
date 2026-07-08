@@ -25,7 +25,7 @@ export type Equipment = {
   title: string; // короткое имя для списка на главной
   titleFull?: string; // полное имя с моделью — для карточки (внутренней страницы)
   category: Category;
-  format: string; // «РФ · на объекте/технике заказчика» / «г. Курган» / «Завод Бурлак, г. Курган»
+  format: string; // «РФ · на объекте/технике заказчика» / «г. Курган»
   instructor: string;
   certificate: "kurgandormash" | null;
   noAccess?: boolean; // не показывать строку про допуск УТМ
@@ -203,7 +203,7 @@ export const contact = {
   department: "Учебный отдел ООО «НПФ «Технотранс»",
   phone: "+7 912 577 7006",
   phoneTel: "+79125777006",
-  email: "julia.kataeva@gmail.com",
+  email: "kataeva@tt45.ru",
   max: "https://max.ru/u/f9LHodD0cOLB4Mw8v5WNO50wueIY2IK3A2Feq0OS1vCulLlh9PsWgO3kR0c",
   telegram: "https://t.me/Julia_S_Kataeva",
 };
@@ -268,7 +268,7 @@ export const equipment: Equipment[] = [
     program: { operator: kuznetsovOperator } },
 
   // ───────── Техника заводов ─────────
-  { id: 12, title: "Снегоболотоход Бурлак", titleFull: "Снегоболотоход Бурлак 6×6 ШНД", category: "factory", format: "Завод Бурлак, г. Курган", instructor: "Петров А. Н., завод «Бурлак»", certificate: null,
+  { id: 12, title: "Снегоболотоход Бурлак", titleFull: "Снегоболотоход Бурлак 6×6 ШНД", category: "factory", format: "г. Курган", instructor: "Петров А. Н., завод «Бурлак»", certificate: null,
     variants: [{ audience: "Водитель-механик вездехода", group: "до 6 человек", duration: "4 дня", price: "270 000 ₽" }],
     program: { combined: [
       "Основные сведения по эксплуатации, обслуживанию и ремонту вездеходной техники",
