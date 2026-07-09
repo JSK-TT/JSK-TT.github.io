@@ -24,9 +24,11 @@ body{font-family:var(--text);color:var(--ink);line-height:1.6;font-size:16.5px;b
   radial-gradient(1000px 560px at -8% 108%,rgba(59,59,110,.55),transparent 55%),
   linear-gradient(165deg,var(--bg1),var(--bg2))}
 @keyframes spin{to{transform:rotate(360deg)}}
-.hero .hgear{position:absolute;right:-90px;top:-40px;width:500px;opacity:.16;z-index:0;pointer-events:none;
-  animation:spin 120s linear infinite;filter:drop-shadow(0 0 40px rgba(46,144,255,.3))}
-@media(max-width:640px){.hero .hgear{width:340px;right:-120px;opacity:.13}}
+.hero .hgear{position:absolute;right:-170px;top:50%;transform:translateY(-50%);width:760px;opacity:.15;z-index:0;pointer-events:none;
+  animation:spin 140s linear infinite;filter:drop-shadow(0 0 50px rgba(46,144,255,.28))}
+@keyframes spinC{to{transform:translateY(-50%) rotate(360deg)}}
+.hero .hgear{animation:spinC 140s linear infinite}
+@media(max-width:640px){.hero .hgear{width:460px;right:-150px;opacity:.12}}
 a{color:var(--accent);text-decoration:none}
 h1,h2,h3{font-family:var(--disp);font-weight:600;line-height:1.05;margin:0;letter-spacing:.005em}
 .wrap{max-width:1060px;margin:0 auto;padding:0 22px}
