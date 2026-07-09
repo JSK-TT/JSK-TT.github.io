@@ -29,6 +29,7 @@ export function SiteHeader() {
           </Link>
           <span>Акции</span>
           <span>Компания</span>
+          <Link href="/partnery/lizingovye-kompanii/">Партнёры</Link>
           <a href="#contacts">Контакты</a>
         </div>
       </nav>

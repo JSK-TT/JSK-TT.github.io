@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лизинговым компаниям — оценка, хранение и реализация неликвидного стока · Технотранс</title>
+<meta name="description" content="Технотранс: работа с неликвидной частью стока изъятой техники лизинговых компаний. Инженерная оценка, ответственное хранение, показ в шоуруме и на полигонах, реализация целиком или по компонентам. Выезд по России.">
+<style>
+@font-face{font-family:'Oswald';src:url('/fonts/Oswald-var.ttf') format('truetype');font-weight:200 700;font-display:swap}
+@font-face{font-family:'Manrope';src:url('/fonts/Manrope-var.ttf') format('truetype');font-weight:200 800;font-display:swap}
+:root{
+  --indigo:#3B3B6E;--bg1:#0F0F24;--bg2:#22224A;
+  --accent:#2E90FF;--accent-h:#5AABFF;
+  --ink:#EEF1FB;--ink-dim:#A9AED4;--line:rgba(255,255,255,.12);
+  --glass:rgba(59,59,110,.34);--glass-2:rgba(20,20,46,.55);--edge:rgba(255,255,255,.16);--glow:rgba(46,144,255,.5);
+  --disp:'Oswald','Arial Narrow',system-ui,sans-serif;
+  --text:'Manrope','Segoe UI',system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0}
+body{font-family:var(--text);color:var(--ink);line-height:1.6;font-size:16.5px;background:var(--bg1);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(1100px 620px at 82% -8%,rgba(46,144,255,.20),transparent 60%),
+  radial-gradient(1000px 560px at -8% 108%,rgba(59,59,110,.55),transparent 55%),
+  linear-gradient(165deg,var(--bg1),var(--bg2))}
+.bg-gear{position:fixed;right:-130px;top:5%;width:600px;opacity:.13;z-index:-1;animation:spin 90s linear infinite;pointer-events:none;filter:drop-shadow(0 0 40px rgba(46,144,255,.25))}
+@keyframes spin{to{transform:rotate(360deg)}}
+a{color:var(--accent);text-decoration:none}
+h1,h2,h3{font-family:var(--disp);font-weight:600;line-height:1.05;margin:0;letter-spacing:.005em}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+
+/* header */
+header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(15,15,36,.55);border-bottom:1px solid transparent;transition:.25s}
+header.bar.scrolled{border-bottom-color:var(--line);background:rgba(15,15,36,.82);box-shadow:0 12px 40px -22px #000}
+.bar .row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}
+.bar .logo{height:34px;display:block}
+.bar .r{display:flex;align-items:center;gap:18px}
+.bar .call{font-family:var(--disp);font-weight:600;letter-spacing:.02em;color:var(--ink);font-size:17px;white-space:nowrap}
+.bar .call span{color:var(--accent)}
+.bar .back{font-family:var(--disp);text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--ink-dim)}
+@media(max-width:640px){.bar .back{display:none}}
+
+/* hero */
+.hero{position:relative;padding:64px 0 30px;overflow:hidden}
+.hero .spot{position:absolute;inset:0;z-index:0;background:radial-gradient(420px 420px at var(--mx,70%) var(--my,25%),rgba(46,144,255,.18),transparent 70%);transition:background .1s;pointer-events:none}
+.hero>.wrap{position:relative;z-index:1}
+.eyebrow{font-family:var(--disp);text-transform:uppercase;letter-spacing:.16em;color:var(--accent);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:10px}
+.eyebrow:before{content:'';width:34px;height:2px;background:var(--accent);display:inline-block}
+.hero h1{font-size:clamp(30px,5.2vw,54px);font-weight:700;margin:18px 0 0;max-width:22ch;
+  background:linear-gradient(180deg,#fff,#C9D6FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{font-family:var(--text);font-size:clamp(16.5px,2.1vw,20px);color:var(--ink-dim);margin-top:22px;max-width:66ch;line-height:1.62}
+.hero .lead b{color:var(--ink)}
+
+/* ribbon */
+.ribbon{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:11px 0;margin:34px 0 0;background:rgba(15,15,36,.4)}
+.ribbon .track{display:inline-block;white-space:nowrap;animation:marq 30s linear infinite;font-family:var(--disp);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-dim);font-size:13px;font-weight:500}
+.ribbon .track b{color:var(--accent);font-weight:600}
+.ribbon .track span{margin:0 16px;color:var(--accent);opacity:.6}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+section{padding:52px 0}
+h2{font-size:clamp(24px,4vw,38px);font-weight:600}
+
+/* glass */
+.glass{background:linear-gradient(180deg,var(--glass),rgba(20,20,46,.42));border:1px solid var(--edge);border-radius:22px;
+  box-shadow:0 30px 70px -50px #000, inset 0 1px 0 rgba(255,255,255,.06)}
+.about{padding:30px 32px;font-size:17px;line-height:1.7}
+.about b{color:#fff}
+.h2wrap{margin-bottom:6px}
+
+/* services */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.card{position:relative;padding:28px 28px 30px;border-radius:22px;overflow:hidden;
+  background:linear-gradient(180deg,var(--glass),rgba(20,20,46,.5));border:1px solid var(--edge);
+  transform:perspective(900px) rotateX(0) rotateY(0);transition:transform .18s ease, box-shadow .25s, border-color .25s;
+  box-shadow:0 30px 70px -55px #000}
+.card:before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;
+  background:radial-gradient(300px 300px at var(--cx,50%) var(--cy,0%),rgba(46,144,255,.16),transparent 70%)}
+.card:hover{border-color:rgba(46,144,255,.5);box-shadow:0 40px 90px -50px var(--glow),0 0 0 1px rgba(46,144,255,.25)}
+.card:hover:before{opacity:1}
+.card .num{font-family:var(--disp);font-weight:700;font-size:44px;line-height:1;color:transparent;-webkit-text-stroke:1.4px rgba(46,144,255,.65);letter-spacing:.02em}
+.card h3{font-family:var(--disp);font-weight:600;font-size:22px;margin:12px 0 0;text-transform:uppercase;letter-spacing:.03em;color:#fff}
+.card p{color:var(--ink-dim);font-size:15px;margin:10px 0 0;line-height:1.6}
+
+/* process */
+.proc{padding:28px 32px;margin-top:24px;font-size:16.5px;line-height:1.7}
+.proc b{color:#fff}
+
+/* CTA */
+.cta{position:relative;padding:44px 34px;overflow:hidden;text-align:center}
+.cta .spot2{position:absolute;inset:0;background:radial-gradient(500px 260px at 50% -10%,rgba(46,144,255,.22),transparent 70%);pointer-events:none}
+.cta>*{position:relative;z-index:1}
+.cta h2{font-size:clamp(24px,4vw,36px)}
+.cta p{color:var(--ink-dim);max-width:64ch;margin:14px auto 0}
+.btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:26px}
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;overflow:hidden;
+  font-family:var(--disp);font-weight:600;letter-spacing:.02em;font-size:16px;padding:15px 26px;border-radius:14px;
+  border:1px solid var(--edge);color:var(--ink);background:var(--glass-2);transition:transform .18s,box-shadow .25s,border-color .25s,color .2s}
+.btn .ic{font-size:17px}
+.btn:hover{transform:translateY(-3px);border-color:rgba(46,144,255,.6);box-shadow:0 20px 40px -20px var(--glow)}
+.btn.primary{background:linear-gradient(180deg,var(--accent),#1E6FD9);border-color:transparent;color:#fff;box-shadow:0 20px 46px -20px var(--glow)}
+.btn.primary:hover{box-shadow:0 26px 60px -18px var(--glow),0 0 0 4px rgba(46,144,255,.18)}
+.btn:after{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-18deg);transition:left .6s}
+.btn:hover:after{left:130%}
+.who{margin-top:20px;color:var(--ink-dim);font-size:14.5px}
+.who b{color:#fff}
+
+/* footer */
+footer{margin-top:20px;border-top:1px solid var(--line);position:relative;overflow:hidden}
+footer .fgear{position:absolute;left:-80px;bottom:-110px;width:380px;opacity:.11;pointer-events:none}
+.fcols{display:grid;grid-template-columns:1.2fr 1fr 1.2fr;gap:26px;padding:44px 0 26px;position:relative;z-index:1}
+@media(max-width:820px){.fcols{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.fcols{grid-template-columns:1fr}}
+.fcol .logo{height:30px;margin-bottom:14px}
+.fcol h4{font-family:var(--disp);text-transform:uppercase;letter-spacing:.12em;font-size:12.5px;color:var(--accent);font-weight:600;margin:0 0 12px}
+.fcol div,.fcol a{font-size:14px;color:var(--ink-dim);line-height:1.75;display:block}
+.fcol a:hover{color:var(--accent)}
+.fcol b{color:#fff}
+.brandline{border-top:1px solid var(--line);padding:16px 0 34px;font-family:var(--disp);text-transform:uppercase;
+  letter-spacing:.12em;color:var(--ink-dim);font-size:12px;position:relative;z-index:1}
+.brandline b{color:var(--accent)}
+.disc{color:var(--ink-dim);opacity:.7;font-family:var(--text);letter-spacing:normal;text-transform:none;font-size:11.5px;margin-top:8px;max-width:80ch}
+b,strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<img class="bg-gear" src="/assets/gear-tt-white.png" alt="" aria-hidden="true">
+
+<header class="bar" id="bar">
+  <div class="wrap row">
+    <a href="/"><img class="logo" src="/assets/logo-tt-white.png" alt="Технотранс"></a>
+    <div class="r">
+      <a class="call" href="tel:+79125777006">8 (800) <span>600-71-90</span></a>
+      <a class="back" href="/">← на главную</a>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="spot" id="spot"></div>
+  <div class="wrap">
+    <div class="eyebrow">Партнёрам · лизинговым компаниям</div>
+    <h1>Оценка, хранение и реализация неликвидной части стока изъятой техники</h1>
+    <p class="lead">В стоке изъятой техники всегда есть позиции, с которыми штатные каналы продаж не справляются: машины не на ходу, неисправные, разукомплектованные. Стоимость их хранения растёт с каждым месяцем, а рыночная цена падает. Предлагаем передать работу с этой частью стока нам: мы оцениваем такую технику, храним, показываем покупателям и реализуем — целиком или по компонентам.</p>
+  </div>
+</div>
+
+<div class="ribbon"><div class="track">
+  <b>Инженерная оценка</b> <span>◆</span> Ответственное хранение <span>◆</span> Показ в шоуруме и на полигонах <span>◆</span> Реализация целиком или по компонентам <span>◆</span> Выезд по России <span>◆</span>
+  <b>Инженерная оценка</b> <span>◆</span> Ответственное хранение <span>◆</span> Показ в шоуруме и на полигонах <span>◆</span> Реализация целиком или по компонентам <span>◆</span> Выезд по России <span>◆</span>
+</div></div>
+
+<section>
+  <div class="wrap reveal">
+    <div class="glass about">
+      <b>ООО «НПФ «Технотранс»</b> работает на рынке специальной техники с 2004 года (г. Курган). Наши направления — продажа, сервис и гарантийный надзор, ремонт и восстановление, поставка запчастей. Компания является официальным дилером и сервисным центром, обслуживает как отечественную технику, так и импортную, включая китайскую (XCMG и другие марки). В распоряжении — собственная сервисная база, выездные бригады, площадки для хранения и показа техники.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="h2wrap reveal"><h2>Что мы предлагаем</h2></div>
+    <div class="grid">
+      <div class="card tilt reveal"><div class="num">01</div><h3>Инженерная оценка</h3><p>По каждой позиции определяем фактическое техническое состояние (двигатель, гидравлика, трансмиссия, ходовая), текущую розничную цену и возможность реализации — как изделия целиком либо как отдельных компонентов и запчастей. Нередко сумма частей превышает цену машины «как есть».</p></div>
+      <div class="card tilt reveal"><div class="num">02</div><h3>Хранение</h3><p>Принимаем технику на ответственное хранение на своих площадках — вы снимаете с себя расходы и заботу о содержании неликвида.</p></div>
+      <div class="card tilt reveal"><div class="num">03</div><h3>Показ и реализация</h3><p>Выставляем технику в шоуруме спецтехники на первой линии и на учебных полигонах, где её видят потенциальные покупатели. Ищем покупателя, в том числе под разбор на компоненты.</p></div>
+      <div class="card tilt reveal"><div class="num">04</div><h3>Выезд</h3><p>При необходимости выездная бригада осмотрит технику прямо на вашей площадке или хабе — работаем по всей России.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="h2wrap reveal"><h2>Порядок взаимодействия</h2></div>
+    <div class="glass proc reveal">
+      Порядок взаимодействия простой. По каждой интересующей позиции вы направляете краткий чек-лист: место хранения, фотографии, техническое описание, заявленную цену. Мы даём инженерное заключение о состоянии, розничной цене и сценарии реализации. Работу ведём на регулярной основе, по мере поступления позиций.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <img class="fgear" src="/assets/gear-tt-white.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fcol">
+        <img class="logo" src="/assets/logo-tt-white.png" alt="Технотранс">
+        <div>ООО «Научно-производственная фирма «Технотранс». Специальная техника, сервис и запчасти с 2004 года.</div>
+      </div>
+      <div class="fcol">
+        <h4>Клиентский сервис</h4>
+        <div><b>Юлия Сергеевна Катаева</b></div>
+        <a href="tel:+79125777006">+7 912 577-70-06</a>
+        <a href="mailto:kataeva@tt45.ru">kataeva@tt45.ru</a>
+        <a href="https://t.me/Julia_S_Kataeva" target="_blank" rel="noopener">Telegram · @Julia_S_Kataeva</a>
+        <a href="https://max.ru/u/f9LHodD0cOLB4Mw8v5WNO50wueIY2IK3A2Feq0OS1vCulLlh9PsWgO3kR0c" target="_blank" rel="noopener">МАКС</a>
+      </div>
+      <div class="fcol">
+        <h4>Реквизиты</h4>
+        <div>640004, г. Курган, ул. С. Тюленина, 80, стр. 1, оф. 1</div>
+        <div>ИНН 4501110957 · КПП 450101001</div>
+        <div>ОГРН 1044500021906</div>
+        <div>Тел.: 8 (3522) 63-40-63 · 8 (800) 600-71-90</div>
+      </div>
+    </div>
+    <div class="brandline">
+      Специализированная техника / Продажа / Сервис / Гарантийный надзор / Запчасти / <b>Инструктажи</b>
+      <div class="disc">Оценка технического состояния предварительная, уточняется по результатам осмотра. Цена реализации зависит от состояния техники и конъюнктуры рынка.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+var bar=document.getElementById('bar');
+addEventListener('scroll',function(){bar.classList.toggle('scrolled',scrollY>10)},{passive:true});
+var hero=document.querySelector('.hero'),spot=document.getElementById('spot');
+if(hero){hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();
+  spot.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+  spot.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');});}
+document.querySelectorAll('.tilt').forEach(function(c){
+  c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();
+    var px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+    c.style.transform='perspective(900px) rotateX('+((.5-py)*6).toFixed(2)+'deg) rotateY('+((px-.5)*7).toFixed(2)+'deg) translateY(-4px)';
+    c.style.setProperty('--cx',(px*100)+'%');c.style.setProperty('--cy',(py*100)+'%');});
+  c.addEventListener('pointerleave',function(){c.style.transform='';});
+});
+var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}})},{threshold:.14});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+</script>
+</body>
+</html>
