@@ -25,7 +25,7 @@ export type Equipment = {
   title: string; // короткое имя для списка на главной
   titleFull?: string; // полное имя с моделью — для карточки (внутренней страницы)
   category: Category;
-  format: string; // «РФ · на объекте/технике заказчика» / «г. Курган»
+  format: string; // «РФ · на объекте и технике заказчика» / «г. Курган»
   instructor: string;
   certificate: "kurgandormash" | null;
   noAccess?: boolean; // не показывать строку про допуск УТМ
@@ -41,7 +41,7 @@ export const CATEGORY_LABELS: Record<Category, string> = {
 };
 
 // Выездной формат по РФ — всегда на объекте и технике заказчика.
-const RF = "РФ · на объекте/технике заказчика";
+const RF = "РФ · на объекте и технике заказчика";
 
 const kuznetsovOperator = [
   "Конструктивные особенности",
@@ -50,7 +50,7 @@ const kuznetsovOperator = [
   "Расположение компонентов",
   "Каталог запасных частей",
   "Система смазки",
-  "Правила нахождения на машине при проведении работ",
+  "Правила безопасности при нахождении на машине при проведении работ",
 ];
 
 const kuznetsovMechanic = [
@@ -66,7 +66,7 @@ const kuznetsovMechanic = [
   "Электрическая система / схемы",
   "Гидравлическая система / схемы",
   "Система смазки",
-  "Правила нахождения на машине при проведении работ",
+  "Правила безопасности при нахождении на машине при проведении работ",
   "Правила нахождения на объекте, где проводятся работы",
   "ТБ при проведении монтажных, демонтажных и диагностических работ",
 ];
@@ -214,61 +214,61 @@ const ttMech: Variant = { audience: "Механик", duration: "2 дня (16 ч
 
 export const equipment: Equipment[] = [
   // ───────── Дорожно-строительная техника ─────────
-  { id: 1, title: "Дорожно-строительный экскаватор", category: "road", format: RF, instructor: "Кузнецов А. В.", certificate: null,
+  { id: 1, title: "Дорожно-строительный экскаватор", category: "road", format: RF, instructor: "Кузнецов Алексей Валерьевич", certificate: null,
     variants: [
       { audience: "Оператор", group: "до 5 человек", duration: "3 дня", price: "150 000 ₽", travelExcluded: true },
       { audience: "Механик", group: "до 15 человек", duration: "5 дней", price: "240 000 ₽", travelExcluded: true },
     ], program: { operator: kuznetsovOperator, mechanic: kuznetsovMechanic } },
-  { id: 2, title: "Экскаватор-погрузчик", titleFull: "Экскаватор-погрузчик UMG TLB 827", category: "road", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 2, title: "Экскаватор-погрузчик", titleFull: "Экскаватор-погрузчик UMG TLB 827", category: "road", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [ttOperator, ttMech], program: { operator: [
       "Назначение и конструкция экскаватора-погрузчика", "Требования безопасности и предсменный осмотр",
       "Запуск, движение, маневрирование", "Работа фронтальным погрузочным оборудованием",
       "Перевод в режим экскаватора, работа стабилизаторами", "Работа экскаваторным оборудованием (обратная лопата)",
       "Завершение работы и безопасная постановка машины"], mechanic: ttMechanic } },
-  { id: 3, title: "Сочленённый самосвал", category: "road", format: RF, instructor: "Кузнецов А. В.", certificate: null,
+  { id: 3, title: "Сочленённый самосвал", category: "road", format: RF, instructor: "Кузнецов Алексей Валерьевич", certificate: null,
     variants: [{ audience: "Оператор", group: "до 5 человек", duration: "3 дня", price: "150 000 ₽", travelExcluded: true }],
     program: { operator: kuznetsovOperator } },
-  { id: 4, title: "Колёсный бульдозер", category: "road", format: RF, instructor: "Кузнецов А. В.", certificate: null,
+  { id: 4, title: "Колёсный бульдозер", category: "road", format: RF, instructor: "Кузнецов Алексей Валерьевич", certificate: null,
     variants: [{ audience: "Оператор", group: "до 5 человек", duration: "3 дня", price: "150 000 ₽", travelExcluded: true }],
     program: { operator: kuznetsovOperator } },
-  { id: 5, title: "Фронтальный погрузчик", titleFull: "Фронтальный погрузчик Hitachi LX70-7", category: "road", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 5, title: "Фронтальный погрузчик", titleFull: "Фронтальный погрузчик Hitachi LX70-7", category: "road", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [ttOperator, ttMech], program: { operator: [
       "Назначение и конструкция колёсного погрузчика", "Требования безопасности и предсменный осмотр",
       "Запуск, движение, маневрирование", "Работа стрелой и ковшом, транспортное положение ковша",
       "Цикл работы с материалом: подъезд, врезание, набор, транспортирование, выгрузка",
       "Завершение работы и безопасная постановка машины"], mechanic: ttMechanic } },
-  { id: 6, title: "Вилочный погрузчик", titleFull: "Вилочный погрузчик GEKA D50", category: "road", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 6, title: "Вилочный погрузчик", titleFull: "Вилочный погрузчик GEKA D50", category: "road", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [ttOperator, ttMech], program: { operator: [
       "Назначение и конструкция вилочного погрузчика", "Требования безопасности и предсменный осмотр",
       "Запуск, движение, маневрирование, парковка",
       "Работа грузоподъёмником: подвод вил под поддон, подъём, транспортирование, установка груза",
       "Транспортное положение груза, скоростные ограничения, работа в ограниченном пространстве",
       "Завершение работы и безопасная постановка машины"], mechanic: ttMechanic } },
-  { id: 7, title: "Мини-погрузчик", titleFull: "Мини-погрузчик Термит ПмК-10-01", category: "road", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: "kurgandormash",
+  { id: 7, title: "Мини-погрузчик", titleFull: "Мини-погрузчик Термит ПмК-10-01", category: "road", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: "kurgandormash",
     variants: [ttOperator, ttMech], program: { operator: [
       "Назначение и конструкция мини-погрузчика с бортовым поворотом",
       "Требования безопасности (ремень-блокировка) и предсменный осмотр", "Запуск, движение, маневрирование",
       "Работа стрелой и ковшом, транспортное положение ковша",
       "Цикл работы с сыпучим материалом: подъезд, врезание, набор, транспортирование, выгрузка",
       "Работа со сменным навесным оборудованием", "Завершение работы и безопасная постановка машины"], mechanic: ttMechanic } },
-  { id: 8, title: "Каток", titleFull: "Каток XCMG XD123", category: "road", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 8, title: "Каток", titleFull: "Каток XCMG XD123", category: "road", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [ttOperator, ttMech], program: { operator: katokOperator, mechanic: katokMechanic } },
 
   // ───────── Карьерная техника ─────────
-  { id: 9, title: "Карьерный экскаватор", category: "quarry", format: RF, instructor: "Кузнецов А. В.", certificate: null,
+  { id: 9, title: "Карьерный экскаватор", category: "quarry", format: RF, instructor: "Кузнецов Алексей Валерьевич", certificate: null,
     variants: [
       { audience: "Оператор", group: "до 5 человек", duration: "3 дня", price: "300 000 ₽", travelExcluded: true },
       { audience: "Механик", group: "до 15 человек", duration: "5 дней", price: "480 000 ₽", travelExcluded: true },
     ], program: { operator: kuznetsovOperator, mechanic: kuznetsovMechanic } },
-  { id: 10, title: "Карьерный самосвал", category: "quarry", format: RF, instructor: "Кузнецов А. В.", certificate: null,
+  { id: 10, title: "Карьерный самосвал", category: "quarry", format: RF, instructor: "Кузнецов Алексей Валерьевич", certificate: null,
     variants: [{ audience: "Оператор", group: "до 5 человек", duration: "3 дня", price: "240 000 ₽", travelExcluded: true }],
     program: { operator: kuznetsovOperator } },
-  { id: 11, title: "Карьерный фронтальный погрузчик", category: "quarry", format: RF, instructor: "Кузнецов А. В.", certificate: null,
+  { id: 11, title: "Карьерный фронтальный погрузчик", category: "quarry", format: RF, instructor: "Кузнецов Алексей Валерьевич", certificate: null,
     variants: [{ audience: "Оператор", group: "до 5 человек", duration: "3 дня", price: "150 000 ₽", travelExcluded: true }],
     program: { operator: kuznetsovOperator } },
 
   // ───────── Техника заводов ─────────
-  { id: 12, title: "Снегоболотоход Бурлак", titleFull: "Снегоболотоход Бурлак 6×6 ШНД", category: "factory", format: "г. Курган", instructor: "Петров А. Н., завод «Бурлак»", certificate: null,
+  { id: 12, title: "Снегоболотоход Бурлак", titleFull: "Снегоболотоход Бурлак 6×6 ШНД", category: "factory", format: "г. Курган", instructor: "Петров Артём Николаевич, завод «Бурлак»", certificate: null,
     variants: [{ audience: "Водитель-механик вездехода", group: "до 6 человек", duration: "4 дня", price: "270 000 ₽" }],
     program: { combined: [
       "Основные сведения по эксплуатации, обслуживанию и ремонту вездеходной техники",
@@ -277,15 +277,15 @@ export const equipment: Equipment[] = [
       "Техническое обслуживание: виды и периодичность, ГСМ, порядок; ТО систем",
       "Ремонт: типовые неисправности двигателя, трансмиссии, электрооборудования; ремонт шин",
       "Консервация и хранение: условия и сроки, кратковременное и длительное хранение"] } },
-  { id: 13, title: "Снегоболотоход Феникс", titleFull: "Снегоболотоход Феникс ШС-04-02", category: "factory", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 13, title: "Снегоболотоход Феникс", titleFull: "Снегоболотоход Феникс ШС-04-02", category: "factory", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [ttOperator, ttMech], program: { operator: phoenixOperator, mechanic: phoenixMechanic } },
-  { id: 14, title: "Трактор МТЗ", titleFull: "Трактор МТЗ 82.1", category: "factory", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 14, title: "Трактор МТЗ", titleFull: "Трактор МТЗ 82.1", category: "factory", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [ttOperator, ttMech], program: { operator: mtzOperator, mechanic: mtzMechanic } },
-  { id: 15, title: "Форвардер АМКОДОР", titleFull: "Форвардер АМКОДОР 2662-01", category: "factory", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 15, title: "Форвардер АМКОДОР", titleFull: "Форвардер АМКОДОР 2662-01", category: "factory", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [ttOperator, ttMech], program: { operator: forwarderOperator, mechanic: forwarderMechanic } },
-  { id: 16, title: "Харвестер АМКОДОР", titleFull: "Харвестер АМКОДОР FH3081", category: "factory", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 16, title: "Харвестер АМКОДОР", titleFull: "Харвестер АМКОДОР FH3081", category: "factory", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [ttOperator, ttMech], program: { operator: harvesterOperator, mechanic: harvesterMechanic } },
-  { id: 17, title: "Полуприцеп РУТТ с КМУ", category: "factory", format: "г. Курган", instructor: "Казаков А. И. / Орлов А. Н.", certificate: null,
+  { id: 17, title: "Полуприцеп РУТТ с КМУ", category: "factory", format: "г. Курган", instructor: "Казаков Александр Иванович / Орлов Александр Николаевич", certificate: null,
     variants: [{ audience: "Оператор-механик", duration: "2 дня (16 часов)", price: "20 000 ₽", perPerson: true }],
     program: { combined: [
       "Назначение и состав полуприцепа и гидроманипулятора, органы управления, эксплуатационные ограничения, требования безопасности",
