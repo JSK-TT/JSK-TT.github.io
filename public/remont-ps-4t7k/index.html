@@ -285,8 +285,9 @@ function buildText(){
   return t;
 }
 
-// Адрес скрипта отправки. Пока пусто — работает запасной путь (файл + почта).
-const SCRIPT_URL="";
+// Адрес скрипта отправки (Google Apps Script, аккаунт julia.kataeva@gmail.com).
+// Если очистить — включится запасной путь: сохранение файла и письмо вручную.
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz_ju2NwIHPNUZ3rgT2t_ETBudjKgMByQQaYe7fVceoMEHQMbqXyzA2LmhMYZF0tMsF/exec";
 const MAILTO="julia.kataeva@gmail.com";
 
 function stamp(){
