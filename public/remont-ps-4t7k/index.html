@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Инвентаризация по ремонту подъёмных сооружений — Технотранс</title>
+<style>
+:root{
+  --indigo:#3B3B6E; --indigo-d:#2C2C54; --accent:#2E90FF; --red:#CC0000;
+  --bg:#F4F5F9; --card:#FFFFFF; --text:#1D1D28; --muted:#6B6B7B;
+  --line:#DEDFE8; --ok:#1E8E4A; --warn:#B8860B;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Segoe UI",Helvetica,sans-serif;background:var(--bg);
+  color:var(--text);font-size:15px;line-height:1.5}
+header{background:linear-gradient(135deg,var(--indigo) 0%,var(--indigo-d) 100%);
+  color:#fff;padding:20px 26px}
+header h1{margin:0 0 3px;font-size:21px;letter-spacing:-.2px}
+header .sub{opacity:.85;font-size:13px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px 40px}
+.bar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);
+  border-bottom:1px solid var(--line);padding:11px 16px;display:flex;gap:14px;
+  align-items:center;backdrop-filter:blur(8px)}
+.progress{flex:1;height:9px;background:var(--line);border-radius:5px;overflow:hidden}
+.progress i{display:block;height:100%;
+  background:linear-gradient(90deg,var(--indigo),var(--accent));width:0;transition:width .3s}
+.pcount{font-size:13px;color:var(--muted);white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+.send{font-family:inherit;font-size:15px;font-weight:bold;padding:11px 30px;
+  border-radius:8px;border:none;background:var(--indigo);color:#fff;cursor:pointer;
+  transition:.15s;white-space:nowrap}
+.send:hover{background:var(--accent)}
+.send.big{display:block;margin:26px auto 0;font-size:17px;padding:15px 54px}
+.who{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:14px 18px;margin:14px 0 0}
+.who input{width:100%;max-width:420px;font-family:inherit;font-size:14px;
+  padding:9px 12px;border:1px solid var(--line);border-radius:7px;background:#FCFCFE}
+.who input:focus{outline:none;border-color:var(--accent)}
+.who label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  margin:14px 0;overflow:hidden}
+.shead{padding:13px 18px;background:#FAFAFD;border-bottom:1px solid var(--line);
+  cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none}
+.shead h2{margin:0;font-size:16px;color:var(--indigo);flex:1}
+.badge{font-size:11px;background:var(--line);color:var(--muted);padding:3px 9px;
+  border-radius:20px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.badge.done{background:#E3F5EA;color:var(--ok)}
+.chev{color:var(--muted);font-size:13px;transition:.2s}
+section.collapsed .chev{transform:rotate(-90deg)}
+section.collapsed .sbody{display:none}
+.sbody{padding:4px 18px 12px}
+.item{padding:12px 0;border-bottom:1px solid #F0F0F5}
+.item:last-child{border-bottom:none}
+.q{margin-bottom:8px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{font-size:13px;padding:6px 15px;border:1px solid var(--line);border-radius:20px;
+  cursor:pointer;background:#fff;transition:.15s}
+.opt:hover{border-color:var(--accent)}
+.opt.sel[data-v="yes"]{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.sel[data-v="no"]{background:var(--red);color:#fff;border-color:var(--red)}
+.opt.sel[data-v="idk"]{background:var(--warn);color:#fff;border-color:var(--warn)}
+.opt.sel[data-v="na"]{background:var(--muted);color:#fff;border-color:var(--muted)}
+.note{width:100%;margin-top:8px;font-family:inherit;font-size:13px;padding:7px 10px;
+  border:1px solid var(--line);border-radius:6px;background:#FCFCFE;display:none;
+  min-height:36px;resize:vertical}
+.note.show{display:block}
+.note:focus{outline:none;border-color:var(--accent)}
+.saved{position:fixed;right:16px;bottom:16px;background:var(--indigo);color:#fff;
+  padding:9px 15px;border-radius:7px;font-size:13px;opacity:0;transition:.3s;
+  pointer-events:none;z-index:50}
+.saved.show{opacity:1}
+.ov{position:fixed;inset:0;background:rgba(28,28,45,.55);display:none;z-index:100;
+  align-items:center;justify-content:center;padding:20px}
+.ov.show{display:flex}
+.modal{background:#fff;border-radius:12px;padding:28px 30px;max-width:470px;width:100%;
+  box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.modal h3{margin:0 0 12px;color:var(--indigo);font-size:19px}
+.modal p{margin:0 0 12px;font-size:14px}
+.modal b{color:var(--indigo)}
+.mbtns{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}
+.mbtns button{font-family:inherit;font-size:14px;padding:10px 20px;border-radius:7px;
+  cursor:pointer;border:1px solid var(--line);background:#fff}
+.mbtns button.pri{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.mbtns button:hover{border-color:var(--accent)}
+.done-box{background:#E3F5EA;border:1px solid #B8E3C8;border-radius:10px;
+  padding:18px 22px;margin:16px 0}
+.done-box h3{margin:0 0 6px;color:var(--ok);font-size:18px}
+.done-box p{margin:0;font-size:14px}
+@media print{.bar,.saved,.send,.ov{display:none}section.collapsed .sbody{display:block}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Инвентаризация по ремонту подъёмных сооружений</h1>
+  <div class="sub">ООО НПФ «Технотранс»</div>
+</header>
+
+<div class="bar">
+  <div class="progress"><i id="pbar"></i></div>
+  <div class="pcount" id="pcount">0 / 0</div>
+  <button class="send" onclick="send()">Отправить</button>
+</div>
+
+<div class="wrap">
+  <div id="sentbox"></div>
+  <div class="who">
+    <label for="who">Кто заполнил</label>
+    <input id="who" placeholder="Фамилия и должность" oninput="setWho(this.value)">
+  </div>
+  <div id="app"></div>
+  <button class="send big" onclick="send()">Отправить</button>
+</div>
+
+<form id="mailform" action="https://formsubmit.co/julia.kataeva@gmail.com"
+      method="POST" style="display:none">
+  <input type="hidden" name="_subject" id="f_subject"
+         value="Инвентаризация по ремонту ПС — Технотранс">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="box">
+  <input type="hidden" name="_next" id="f_next" value="">
+  <input type="hidden" name="Заполнил" id="f_who" value="">
+  <textarea name="Результаты" id="f_body"></textarea>
+</form>
+
+<div class="saved" id="saved">Сохранено</div>
+
+<div class="ov" id="ov">
+  <div class="modal">
+    <h3 id="m_title">Не все позиции отмечены</h3>
+    <p id="m_text"></p>
+    <div class="mbtns">
+      <button class="pri" onclick="doSend()">Всё равно отправить</button>
+      <button onclick="closeOv()">Вернуться</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA=[
+ {id:"att",t:"Аттестация и обучение людей",items:[
+  ["a1","Аттестация ИТР по промышленной безопасности, области А.1 и Б.9.5: руководитель, главный инженер, мастера"],
+  ["a2","Аттестация работника, ответственного за производственный контроль"],
+  ["a3","Свидетельства о профессии рабочего у слесарей по ремонту подъёмных сооружений"],
+  ["a4","Обучение по охране труда: программы А, Б, В, первая помощь, применение СИЗ"],
+  ["a5","Удостоверения по работам на высоте с указанием группы"],
+  ["a6","Группы по электробезопасности у электротехнического персонала"],
+  ["a7","Удостоверения стропальщиков, рабочих люльки, машинистов крана"],
+  ["a8","Договор с АНО ДПО «Специалист» на обучение работников"]
+ ]},
+ {id:"weld",t:"Сварка и неразрушающий контроль",items:[
+  ["w1","Аттестационные удостоверения сварщиков по способам сварки и видам конструкций"],
+  ["w2","Аттестация специалистов сварочного производства (уровни II–IV)"],
+  ["w3","Свидетельства об аттестации ТЕХНОЛОГИЙ сварки — выдаются организации"],
+  ["w4","Свидетельства об аттестации сварочного оборудования"],
+  ["w5","Договор с аттестованной лабораторией неразрушающего контроля"]
+ ]},
+ {id:"eq",t:"Оборудование и приборы",items:[
+  ["e1","Сварочное оборудование, оборудование для резки и правки металла"],
+  ["e2","Динамометры или контрольные грузы для испытаний под нагрузкой"],
+  ["e3","Действующие свидетельства о поверке средств измерений"],
+  ["e4","Приборы для проверки ограничителей грузоподъёмности и считывания регистраторов"]
+ ]},
+ {id:"zav",t:"Документация заводов-изготовителей",items:[
+  ["z1","Руководства по эксплуатации на обслуживаемые модели техники"],
+  ["z2","Ремонтная документация и нормы браковки от заводов"],
+  ["z3","Налажен канал согласования изменений конструкции с заводами"]
+ ]},
+ {id:"ot",t:"Охрана труда — фактическое состояние",items:[
+  ["o1","Специальная оценка условий труда не старше пяти лет"],
+  ["o2","Проведена оценка профессиональных рисков"],
+  ["o3","Действует положение о системе управления охраной труда"],
+  ["o4","Медицинские осмотры и психиатрическое освидетельствование работников"],
+  ["o5","Инструкции по охране труда по профессиям и видам работ"],
+  ["o6","СИЗ выдаются по Единым типовым нормам, ведутся карточки учёта"],
+  ["o7","При ремонте фактически применяются инвентарные подставки под стрелу, упоры под колёса и блокировка органов управления"]
+ ]},
+ {id:"dog",t:"Договоры и контрагенты",items:[
+  ["g1","Действующий договор на сервисное обслуживание содержит условия об оплате, приёмке и гарантии"],
+  ["g2","Полис страхования гражданской ответственности подрядчика"],
+  ["g3","Договор с экспертной организацией на экспертизу промышленной безопасности"],
+  ["g4","Авторизация как сервисный центр завода-изготовителя"]
+ ]},
+ {id:"ts",t:"Транспорт и переоборудование",items:[
+  ["t1","Выполняется установка кранов-манипуляторов и замена крановых установок"],
+  ["t2","Изменения в конструкцию транспортных средств оформлялись через Госавтоинспекцию"],
+  ["t3","Договор с аккредитованной испытательной лабораторией по транспортным средствам"]
+ ]},
+ {id:"pred",t:"Предприятие в целом",items:[
+  ["p1","В цехе есть стационарная кран-балка, мостовой или консольный кран"],
+  ["p2","Если такой кран есть: зарегистрирован опасный производственный объект, оформлен полис по ФЗ-225, организован производственный контроль"],
+  ["p3","Назначен ответственный за электрохозяйство и его заместитель"],
+  ["p4","Отходы: паспорта, договоры с лицензированными операторами, учёт объекта негативного воздействия"],
+  ["p5","Баллоны с газом: ответственный, журнал учёта, оборудованное хранение"],
+  ["p6","Пожарная безопасность: категорирование помещений, ответственный, обучение"],
+  ["p7","Ведётся воинский учёт"],
+  ["p8","Персональные данные: политика, согласия, уведомление Роскомнадзора"],
+  ["p9","Санитарно-бытовое обеспечение выездных бригад"]
+ ]}
+];
+
+let S={},WHO="";
+const KEY="tt_ps_anketa_v3";
+const LBL={yes:"есть",no:"нет",idk:"не знаю",na:"не применимо"};
+
+function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);
+  S=o.s||{};WHO=o.w||""}}catch(e){S={}}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({s:S,w:WHO}));toast()}catch(e){}}
+let tt;
+function toast(){const e=document.getElementById("saved");e.classList.add("show");
+  clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("show"),1000)}
+function setWho(v){WHO=v;save()}
+
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;")
+  .replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+
+function render(){
+  const app=document.getElementById("app");app.innerHTML="";
+  DATA.forEach(sec=>{
+    const el=document.createElement("section");
+    let h='<div class="shead" onclick="this.parentNode.classList.toggle(\'collapsed\')">'+
+      '<span class="chev">&#9660;</span><h2>'+sec.t+'</h2>'+
+      '<span class="badge" id="b-'+sec.id+'"></span></div><div class="sbody">';
+    sec.items.forEach(it=>{
+      const[id,q]=it;const v=S[id]||{};
+      h+='<div class="item"><div class="q">'+q+'</div><div class="opts">';
+      ["yes","no","idk","na"].forEach(o=>{
+        h+='<div class="opt'+(v.st===o?' sel':'')+'" data-v="'+o+'" '+
+           'onclick="pick(\''+id+'\',\''+o+'\')">'+LBL[o]+'</div>';
+      });
+      h+='</div><textarea class="note'+(v.st==="yes"?' show':'')+'" id="n-'+id+'" '+
+         'placeholder="Реквизиты, срок действия, комментарий" '+
+         'oninput="upd(\''+id+'\',this.value)">'+esc(v.com)+'</textarea></div>';
+    });
+    el.innerHTML=h+"</div>";app.appendChild(el);
+  });
+  document.getElementById("who").value=WHO;
+  stats();
+}
+
+function pick(id,v){
+  S[id]=S[id]||{};
+  S[id].st=(S[id].st===v)?"":v;
+  const n=document.getElementById("n-"+id);
+  if(n)n.classList.toggle("show",S[id].st==="yes");
+  n.parentNode.querySelectorAll(".opt").forEach(o=>
+    o.classList.toggle("sel",o.dataset.v===S[id].st));
+  save();stats();
+}
+function upd(id,val){S[id]=S[id]||{};S[id].com=val;save()}
+
+function total(){let t=0;DATA.forEach(s=>t+=s.items.length);return t}
+function filled(){let f=0;DATA.forEach(s=>s.items.forEach(i=>{
+  if(S[i[0]]&&S[i[0]].st)f++}));return f}
+
+function stats(){
+  DATA.forEach(sec=>{
+    let st=0;
+    sec.items.forEach(it=>{if(S[it[0]]&&S[it[0]].st)st++});
+    const b=document.getElementById("b-"+sec.id);
+    if(b){b.textContent=st+" / "+sec.items.length;
+      b.classList.toggle("done",st===sec.items.length)}
+  });
+  const t=total(),f=filled();
+  document.getElementById("pcount").textContent=f+" / "+t;
+  document.getElementById("pbar").style.width=(t?f/t*100:0)+"%";
+}
+
+function buildText(){
+  let t="ИНВЕНТАРИЗАЦИЯ ПО РЕМОНТУ ПОДЪЁМНЫХ СООРУЖЕНИЙ\n";
+  t+="ООО НПФ «Технотранс»\n";
+  t+="Заполнил: "+(WHO||"не указано")+"\n";
+  t+="Дата: "+new Date().toLocaleString("ru-RU")+"\n";
+  t+="Отмечено: "+filled()+" из "+total()+"\n";
+  DATA.forEach(sec=>{
+    t+="\n--- "+sec.t.toUpperCase()+" ---\n";
+    sec.items.forEach(it=>{
+      const v=S[it[0]]||{};
+      t+="["+(LBL[v.st]||"не отмечено")+"] "+it[1];
+      if(v.com)t+="\n    "+v.com;
+      t+="\n";
+    });
+  });
+  const no=[],idk=[];
+  DATA.forEach(sec=>sec.items.forEach(it=>{
+    const v=S[it[0]]||{};
+    if(v.st==="no")no.push(it[1]);
+    if(v.st==="idk")idk.push(it[1]);
+  }));
+  if(no.length){t+="\n=== ЧЕГО НЕТ ("+no.length+") ===\n";no.forEach(x=>t+="• "+x+"\n")}
+  if(idk.length){t+="\n=== ТРЕБУЕТ УТОЧНЕНИЯ ("+idk.length+") ===\n";
+    idk.forEach(x=>t+="• "+x+"\n")}
+  return t;
+}
+
+function send(){
+  const f=filled(),t=total();
+  if(f<t){
+    document.getElementById("m_text").textContent=
+      "Отмечено "+f+" из "+t+". Можно отправить как есть — незаполненные позиции "+
+      "будут отмечены как «не отмечено».";
+    document.getElementById("ov").classList.add("show");
+    return;
+  }
+  doSend();
+}
+function closeOv(){document.getElementById("ov").classList.remove("show")}
+
+function doSend(){
+  closeOv();
+  document.getElementById("f_body").value=buildText();
+  document.getElementById("f_who").value=WHO||"не указано";
+  document.getElementById("f_subject").value=
+    "Инвентаризация по ремонту ПС — Технотранс"+(WHO?" — "+WHO:"");
+  const base=location.href.split("?")[0].split("#")[0];
+  document.getElementById("f_next").value=base+"?sent=1";
+  document.getElementById("mailform").submit();
+}
+
+function checkSent(){
+  if(location.search.indexOf("sent=1")<0)return;
+  document.getElementById("sentbox").innerHTML=
+    '<div class="done-box"><h3>Отправлено</h3>'+
+    '<p>Ответы ушли на почту. Спасибо — больше ничего делать не нужно.</p></div>';
+  window.scrollTo(0,0);
+}
+
+load();render();checkSent();
+</script>
+</body>
+</html>
