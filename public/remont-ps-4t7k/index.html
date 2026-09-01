@@ -112,27 +112,19 @@ section.collapsed .sbody{display:none}
   <button class="send big" onclick="send()">Отправить</button>
 </div>
 
-<form id="mailform" action="https://formsubmit.co/julia.kataeva@gmail.com"
-      method="POST" style="display:none">
-  <input type="hidden" name="_subject" id="f_subject"
-         value="Инвентаризация по ремонту ПС — Технотранс">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_template" value="box">
-  <input type="hidden" name="_next" id="f_next" value="">
-  <input type="hidden" name="Заполнил" id="f_who" value="">
-  <textarea name="Результаты" id="f_body"></textarea>
+<iframe name="sink" id="sink" style="display:none"></iframe>
+<form id="mailform" method="POST" target="sink" style="display:none">
+  <input type="hidden" name="who" id="f_who" value="">
+  <textarea name="text" id="f_body"></textarea>
 </form>
 
 <div class="saved" id="saved">Сохранено</div>
 
 <div class="ov" id="ov">
   <div class="modal">
-    <h3 id="m_title">Не все позиции отмечены</h3>
+    <h3 id="m_title"></h3>
     <p id="m_text"></p>
-    <div class="mbtns">
-      <button class="pri" onclick="doSend()">Всё равно отправить</button>
-      <button onclick="closeOv()">Вернуться</button>
-    </div>
+    <div class="mbtns" id="m_btns"></div>
   </div>
 </div>
 
@@ -293,39 +285,110 @@ function buildText(){
   return t;
 }
 
+// Адрес скрипта отправки. Пока пусто — работает запасной путь (файл + почта).
+const SCRIPT_URL="";
+const MAILTO="julia.kataeva@gmail.com";
+
+function stamp(){
+  const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+
+         "-"+String(d.getDate()).padStart(2,"0");
+}
+
+function modal(title,text,btns){
+  document.getElementById("m_title").textContent=title;
+  document.getElementById("m_text").innerHTML=text;
+  const box=document.getElementById("m_btns");box.innerHTML="";
+  btns.forEach(b=>{
+    const el=document.createElement("button");
+    el.textContent=b[0];
+    if(b[2])el.className="pri";
+    el.onclick=b[1];
+    box.appendChild(el);
+  });
+  document.getElementById("ov").classList.add("show");
+}
+function closeOv(){document.getElementById("ov").classList.remove("show")}
+
 function send(){
   const f=filled(),t=total();
   if(f<t){
-    document.getElementById("m_text").textContent=
-      "Отмечено "+f+" из "+t+". Можно отправить как есть — незаполненные позиции "+
-      "будут отмечены как «не отмечено».";
-    document.getElementById("ov").classList.add("show");
+    modal("Отмечено не всё",
+      "Заполнено "+f+" из "+t+" позиций. Можно отправить как есть — "+
+      "остальные будут помечены как неотмеченные.",
+      [["Всё равно отправить",doSend,true],["Вернуться",closeOv]]);
     return;
   }
   doSend();
 }
-function closeOv(){document.getElementById("ov").classList.remove("show")}
 
 function doSend(){
   closeOv();
-  document.getElementById("f_body").value=buildText();
-  document.getElementById("f_who").value=WHO||"не указано";
-  document.getElementById("f_subject").value=
-    "Инвентаризация по ремонту ПС — Технотранс"+(WHO?" — "+WHO:"");
-  const base=location.href.split("?")[0].split("#")[0];
-  document.getElementById("f_next").value=base+"?sent=1";
-  document.getElementById("mailform").submit();
+  const txt=buildText();
+  if(SCRIPT_URL){
+    document.getElementById("mailform").action=SCRIPT_URL;
+    document.getElementById("f_body").value=txt;
+    document.getElementById("f_who").value=WHO||"не указано";
+    document.getElementById("mailform").submit();
+    document.getElementById("sentbox").innerHTML=
+      '<div class="done-box"><h3>Отправлено</h3>'+
+      '<p>Ответы ушли на почту. Больше ничего делать не нужно.</p></div>';
+    window.scrollTo(0,0);
+    return;
+  }
+  fallback(txt);
 }
 
-function checkSent(){
-  if(location.search.indexOf("sent=1")<0)return;
-  document.getElementById("sentbox").innerHTML=
-    '<div class="done-box"><h3>Отправлено</h3>'+
-    '<p>Ответы ушли на почту. Спасибо — больше ничего делать не нужно.</p></div>';
-  window.scrollTo(0,0);
+function fallback(txt){
+  const name="Анкета-ПС-"+stamp()+".txt";
+  let saved=false;
+  try{
+    const b=new Blob(["﻿"+txt],{type:"text/plain;charset=utf-8"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(b);
+    a.download=name;document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},400);
+    saved=true;
+  }catch(e){}
+  modal("Готово",
+    (saved?"Файл <b>"+name+"</b> сохранён в папку <b>Загрузки</b>.<br><br>":"")+
+    "Отправьте его на <b>"+MAILTO+"</b> — или нажмите «Открыть почту», "+
+    "письмо сформируется само.",
+    [["Открыть почту",openMail,true],
+     ["Скопировать текст",()=>copyTxt(txt)],
+     ["Закрыть",closeOv]]);
 }
 
-load();render();checkSent();
+function openMail(){
+  const no=[],idk=[];
+  DATA.forEach(sec=>sec.items.forEach(it=>{
+    const v=S[it[0]]||{};
+    if(v.st==="no")no.push(it[1]);
+    if(v.st==="idk")idk.push(it[1]);
+  }));
+  let b="Инвентаризация по ремонту подъёмных сооружений\n";
+  b+="Заполнил: "+(WHO||"не указано")+"\n";
+  b+="Отмечено: "+filled()+" из "+total()+"\n\n";
+  b+="ЧЕГО НЕТ ("+no.length+"):\n";
+  no.slice(0,12).forEach(x=>b+="- "+x+"\n");
+  if(no.length>12)b+="...и ещё "+(no.length-12)+"\n";
+  b+="\nТРЕБУЕТ УТОЧНЕНИЯ ("+idk.length+"):\n";
+  idk.slice(0,12).forEach(x=>b+="- "+x+"\n");
+  if(idk.length>12)b+="...и ещё "+(idk.length-12)+"\n";
+  b+="\nПолный список — в приложенном файле из папки «Загрузки».";
+  const s="Инвентаризация по ремонту ПС"+(WHO?" — "+WHO:"");
+  location.href="mailto:"+MAILTO+"?subject="+encodeURIComponent(s)+
+                "&body="+encodeURIComponent(b);
+}
+
+function copyTxt(t){
+  navigator.clipboard.writeText(t).then(()=>{
+    const e=document.getElementById("saved");e.textContent="Скопировано";
+    e.classList.add("show");
+    setTimeout(()=>{e.classList.remove("show");e.textContent="Сохранено"},1600);
+  }).catch(()=>alert("Скопировать не удалось. Отправьте файл из папки «Загрузки»."));
+}
+
+load();render();
 </script>
 </body>
 </html>
