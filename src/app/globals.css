@@ -5,14 +5,15 @@
    Источник правды: дизайн-система/tt-design-system.md + reference-live
    ============================================================ */
 
-@font-face{font-family:"PF Din Display";src:url("/fonts/PFDinDisplayPro-Light.woff2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PF Din Display";src:url("/fonts/PFDinDisplayPro-Med.woff2") format("woff2");font-weight:500;font-display:swap}
-@font-face{font-family:"PF Din Display";src:url("/fonts/PFDinDisplayPro-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PF Din Text";src:url("/fonts/PFDinTextPro-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PF Din Text";src:url("/fonts/PFDinTextPro-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
-@font-face{font-family:"PF Din Text";src:url("/fonts/PFDinTextPro-Bold.otf") format("opentype");font-weight:600 700;font-display:swap}
-@font-face{font-family:"PF Din Cond";src:url("/fonts/PFDinTextCondPro-MedItal.woff2") format("woff2");font-weight:500;font-style:italic;font-display:swap}
-@font-face{font-family:"PF Din Cond";src:url("/fonts/PFDinTextCondPro-BoldItal.woff2") format("woff2");font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:"TT Display";src:url("/fonts/Oswald-tt.woff2") format("woff2-variations");font-weight:200 700;font-display:swap}
+@font-face{font-family:"TT Text";src:url("/fonts/Manrope-tt.woff2") format("woff2-variations");font-weight:200 800;font-display:swap}
+
+
+
+
+
+
+
 
 :root{
   --indigo:#3B3B6E;
@@ -22,9 +23,9 @@
   --ondark:#F1F1FA; --ondark2:#A0A0C8;
   --glass-bg:linear-gradient(135deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.03) 100%);
   --glass-border:rgba(255,255,255,.15);
-  --disp:"PF Din Display",Arial,sans-serif;
-  --body-font:"PF Din Text","Segoe UI",Arial,sans-serif;
-  --cond:"PF Din Cond",Arial,sans-serif;
+  --disp:"TT Text","Segoe UI",Arial,sans-serif;
+  --body-font:"TT Text","Segoe UI",Arial,sans-serif;
+  --cond:"TT Display","Arial Narrow",Arial,sans-serif;
   --maxw:1100px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
